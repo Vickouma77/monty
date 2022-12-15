@@ -65,4 +65,12 @@ extern global_t vglo;
 
 /*opcodes commands */
 void _push(stack_t **stack, unsigned int line_number);
+
+
+/* functions for doubly linked lists */
+stack_t *add_dnodeint_end(stack_t **head, const int n);
+stack_t *add_dnodeint(stack_t **head, const int n);
+void free_dlistint(stack_t *head);
+
+void free_vglo(void);
 #endif
