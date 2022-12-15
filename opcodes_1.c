@@ -1,60 +1,69 @@
 #include "monty.h"
 
 /**
- * _push - pushes an element to the stack
+ * push - Add node to the stack
+ * @stack: head of linkedlist
+ * @line_number: line number of the instruction
  *
- * @doubly: head of the linked list
- * @cline: line number
- * Return: no return
+ * Return: No return
  */
-void _push(stack_t **doubly, unsigned int cline)
+void push(stack_t **stack, unsigned int line_number)
 {
-	int n, j;
 
-	if (!vglo.arg)
+	int n = 0;
+
+	if (globalvar.token2 == NULL)
 	{
-		dprintf(2, "L%u: ", cline);
-		dprintf(2, "usage: push integer\n");
-		free_vglo();
-		exit(EXIT_FAILURE);
+		free_dlistint(*stack);
+		stderr_int(line_number);
 	}
-
-	for (j = 0; vglo.arg[j] != '\0'; j++)
+	if (!_isdigit() || stack == NULL)
 	{
-		if (!isdigit(vglo.arg[j]) && vglo.arg[j] != '-')
-		{
-			dprintf(2, "L%u: ", cline);
-			dprintf(2, "usage: push integer\n");
-			free_vglo();
-			exit(EXIT_FAILURE);
-		}
+		free_dlistint(*stack);
+		stderr_int(line_number);
 	}
-
-	n = atoi(vglo.arg);
-
-	if (vglo.lifo == 1)
-		add_dnodeint(doubly, n);
+	n = atoi(globalvar.token2);
+	if (*stack  == NULL)
+	{
+		create_node_stackfirst(stack, n);
+	}
 	else
-		add_dnodeint_end(doubly, n);
+	{
+		create_node_stackend(stack, n);
+	}
 }
 
 /**
- * _pall - prints all values on the stack
+ * pall - Print the stack
+ * @stack: head of linkedlist
+ * @line_number: line number of the instruction
  *
- * @doubly: head of the linked list
- * @cline: line numbers
- * Return: no return
+ * Return: No return
  */
-void _pall(stack_t **doubly, unsigned int cline)
+void pall(stack_t **stack, unsigned int line_number)
 {
-	stack_t *aux;
-	(void)cline;
 
-	aux = *doubly;
+	stack_t *temp = NULL;
 
-	while (aux)
+
+	if (*stack == NULL)
 	{
-		printf("%d\n", aux->n);
-		aux = aux->next;
+		return;
 	}
+	if (*stack == NULL && line_number != 1)
+	{
+		free_dlistint(*stack);
+		free_globalvars();
+		exit(EXIT_SUCCESS);
+	}
+	temp = *stack;
+	while (temp->next != NULL)
+		temp = temp->next;
+	while (temp->prev != NULL)
+	{
+		printf("%d", temp->n);
+		temp = temp->prev;
+		printf("\n");
+	}
+	printf("%d\n", temp->n);
 }
