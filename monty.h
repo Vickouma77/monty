@@ -65,6 +65,7 @@ extern global_t vglo;
 
 /*opcodes commands */
 void _push(stack_t **stack, unsigned int line_number);
+void _pall(stack_t **stack, unsigned int line_number);
 
 
 /* functions for doubly linked lists */
